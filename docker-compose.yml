@@ -1,0 +1,21 @@
+services:
+  web:
+    image: nginx:alpine
+    container_name: volatility_web
+    hostname: volatility_web
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    environment:
+      - TZ=Asia/Seoul
+    volumes:
+      - ./:/usr/share/nginx/html
+    networks:
+      - server-base-net  # 외부 네트워크 연결
+    env_file:
+      - .env
+    command: /bin/sh -c "echo 'window.API_KEY = \"${API_KEY}\";' > /usr/share/nginx/html/config.js && nginx -g 'daemon off;'"
+
+networks:
+  server-base-net:
+    external: true

@@ -1,0 +1,30 @@
+{
+  "매직스플릿(12)": [
+    "CDW", "COIN", "CRWD", "CRWV", "DAL",
+    "DXYZ", "IONQ", "MSTR", "NVDA", "QUBT",
+    "TSLA", "XYZ"
+  ],
+  "트럼프주(65)": [
+    "ACHR", "AFRM", "AMD", "AMZN", "APP", 
+    "ARM", "ARQQ", "AVGO", "AXON", "BA", 
+    "BAM", "BLK", "BLOK", "BWXT", "COIN",
+    "CRL", "CRNC", "CRWV", "CVNA", "DXYZ",
+    "EQT", "FSLR", "GE", "GEO", "GEV", 
+    "GS", "GOOGL", "HOOD", "IBKR", "IONQ",
+    "JOBY", "JPM", "KMI", "LEU", "LNG", 
+    "LUNR", "MP", "MSFT", "MSTR", "NET",
+    "NNE", "NVDA", "OKLO", "ORCL", "PLTR",
+    "PL", "RBLX", "RCAT", "RDDT", "RKLB", 
+    "RGTI", "QBTS", "RTX", "SMCI", "SMR", 
+    "SOFI", "SOUN", "TEMP", "TSLA", "TSM", 
+    "UMAC", "VRT", "VST", "XYZ", "ZS"
+  ],
+  "나무증권(11)": [
+    "AAPL", "CROX", "NVDA", "NVO", "OXY",
+    "QCOM", "RXRX", "QQQ", "SOUN", "TSLA",
+    "VOO"
+  ],
+  "샘플": [
+    "SMR"
+  ]
+}

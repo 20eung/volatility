@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>변동성 종목 탐색기</title>
+    <script src="config.js"></script>
+    <link rel="icon" href="volatility-icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="volatility-icon.svg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f0f2f5; /* Light mode background */
+            background-image: radial-gradient(#dbeafe 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        .dark body {
+            background-color: #111827; /* Dark mode background */
+            background-image: radial-gradient(#374151 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.6);
+            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .dark .glass-card {
+            background: rgba(31, 41, 55, 0.6);
+            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .tab-button {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 500;
+            color: #6b7280;
+            transition: all 0.3s ease;
+        }
+        .dark .tab-button {
+            color: #9ca3af;
+        }
+        .tab-button.active-tab {
+            color: #ffffff;
+            background-image: linear-gradient(to right, #4f46e5, #7c3aed);
+            box-shadow: 0 4px 10px -2px rgba(0, 0, 0, 0.1);
+        }
+        .tab-button:not(.active-tab):hover {
+            background-color: #e5e7eb;
+        }
+        .dark .tab-button:not(.active-tab):hover {
+            background-color: #374151;
+        }
+
+        .btn-gradient {
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px -2px rgba(0, 0, 0, 0.1);
+        }
+        .btn-gradient:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .loader {
+            border-top-color: #3498db;
+            -webkit-animation: spin 1s linear infinite;
+            animation: spin 1s linear infinite;
+        }
+        @-webkit-keyframes spin {
+            0% { -webkit-transform: rotate(0deg); }
+            100% { -webkit-transform: rotate(360deg); }
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <div class="w-full max-w-5xl mx-auto rounded-2xl shadow-2xl p-6 md:p-8 glass-card">
+        
+        <header class="mb-8 text-center">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">변동성 종목 탐색기</h1>
+            <p class="text-md text-gray-600 dark:text-gray-400 mt-2" id="report-description">일일 또는 기간별 주식 변동성을 분석합니다.</p>
+        </header>
+
+        <!-- Tab Navigation & Controls -->
+        <div class="mb-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex-shrink-0">
+                <div class="p-1 rounded-xl bg-gray-200 dark:bg-gray-700 flex space-x-1">
+                    <button id="tab-daily" class="tab-button active-tab">일일 분석</button>
+                    <button id="tab-period" class="tab-button">기간 분석</button>
+                </div>
+            </div>
+
+            <!-- Controls -->
+            <div id="tab-controls" class="w-full sm:w-auto">
+                <!-- Daily Controls -->
+                <div id="tab-content-daily" class="tab-content">
+                    <div class="flex items-center gap-2">
+                        <label for="reportDate" class="sr-only">기준 날짜</label>
+                        <input type="date" id="reportDate" class="w-full p-2 text-sm bg-gray-100 dark:bg-gray-900/50 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 transition duration-150">
+                        <button id="generateReportDaily" class="flex-shrink-0 btn-gradient bg-gradient-to-r from-blue-600 to-indigo-700 text-white font-bold py-2 px-4 text-sm rounded-lg hover:from-blue-700 hover:to-indigo-800">
+                            탐색
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Period Controls -->
+                <div id="tab-content-period" class="tab-content hidden">
+                    <div class="flex items-center gap-2">
+                        <label for="startDate" class="sr-only">시작 날짜</label>
+                        <input type="date" id="startDate" class="w-full p-2 text-sm bg-gray-100 dark:bg-gray-900/50 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 transition duration-150">
+                        <label for="endDate" class="sr-only">종료 날짜</label>
+                        <input type="date" id="endDate" class="w-full p-2 text-sm bg-gray-100 dark:bg-gray-900/50 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 transition duration-150">
+                        <button id="generateReportPeriod" class="flex-shrink-0 btn-gradient bg-gradient-to-r from-purple-600 to-pink-700 text-white font-bold py-2 px-4 text-sm rounded-lg hover:from-purple-700 hover:to-pink-800">
+                            탐색
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Watchlist Controls -->
+        <div class="mb-4 p-4 bg-gray-100 dark:bg-gray-900/30 rounded-lg">
+            <div class="flex flex-col sm:flex-row items-center gap-3">
+                <label for="watchlist-select" class="text-sm font-medium text-gray-700 dark:text-gray-300">관심종목:</label>
+                <select id="watchlist-select" class="flex-grow p-2 text-sm bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500"></select>
+                <div class="flex items-center gap-2">
+                    <button id="load-watchlist" class="btn-gradient bg-slate-500 text-white font-bold py-2 px-4 text-sm rounded-lg hover:bg-slate-600">불러오기</button>
+                    <button id="update-watchlist" class="btn-gradient bg-blue-600 text-white font-bold py-2 px-4 text-sm rounded-lg hover:bg-blue-700">업데이트</button>
+                    <button id="create-watchlist" class="btn-gradient bg-green-600 text-white font-bold py-2 px-4 text-sm rounded-lg hover:bg-green-700">새로 저장</button>
+                    <button id="delete-watchlist" class="btn-gradient bg-red-600 text-white font-bold py-2 px-4 text-sm rounded-lg hover:bg-red-700">삭제</button>
+                    <button id="reset-watchlist" class="btn-gradient bg-orange-500 text-white font-bold py-2 px-4 text-sm rounded-lg hover:bg-orange-600">초기화</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ticker Input (Common for both tabs) -->
+        <div class="mb-6">
+            <label for="tickers" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">분석 대상 종목 (쉼표로 구분)</label>
+            <textarea id="tickers" rows="3" class="w-full p-3 bg-gray-100 dark:bg-gray-900/50 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150"></textarea>
+        </div>
+
+        <!-- Report Result Area -->
+        <div id="reportResult" class="mt-8">
+            <div id="loader" class="hidden justify-center items-center py-8">
+                <div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12"></div>
+                <p class="ml-4 text-gray-500 dark:text-gray-400">데이터를 분석 중입니다. 잠시만 기다려주세요...</p>
+            </div>
+            <div id="resultTableContainer"></div>
+            <div id="noResultMessage" class="hidden text-center py-8 px-4 bg-gray-100 dark:bg-gray-900/20 rounded-lg">
+                <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <path vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">분석 결과 없음</h3>
+                <p id="no-result-message-text" class="mt-1 text-sm text-gray-500 dark:text-gray-400">선택하신 조건에 맞는 종목이 없습니다.</p>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // --- DOM Elements ---
+        const tickersInput = document.getElementById('tickers');
+        const loader = document.getElementById('loader');
+        const resultTableContainer = document.getElementById('resultTableContainer');
+        const noResultMessage = document.getElementById('noResultMessage');
+        const noResultText = document.getElementById('no-result-message-text');
+
+        // --- Tab Elements ---
+        const tabDaily = document.getElementById('tab-daily');
+        const tabPeriod = document.getElementById('tab-period');
+        const contentDaily = document.getElementById('tab-content-daily');
+        const contentPeriod = document.getElementById('tab-content-period');
+
+        // --- Daily Report Elements ---
+        const reportDateInput = document.getElementById('reportDate');
+        const generateReportDailyBtn = document.getElementById('generateReportDaily');
+
+        // --- Period Report Elements ---
+        const startDateInput = document.getElementById('startDate');
+        const endDateInput = document.getElementById('endDate');
+        const generateReportPeriodBtn = document.getElementById('generateReportPeriod');
+
+        // --- Watchlist Elements ---
+        const watchlistSelect = document.getElementById('watchlist-select');
+        const loadWatchlistBtn = document.getElementById('load-watchlist');
+        const createWatchlistBtn = document.getElementById('create-watchlist');
+        const updateWatchlistBtn = document.getElementById('update-watchlist');
+        const deleteWatchlistBtn = document.getElementById('delete-watchlist');
+        const resetWatchlistBtn = document.getElementById('reset-watchlist');
+
+        // --- Initial Setup ---
+        const WATCHLIST_STORAGE_KEY = 'volatility_watchlist';
+
+        // --- Watchlist Logic ---
+        async function initializeWatchlist() {
+            const localWatchlist = JSON.parse(localStorage.getItem(WATCHLIST_STORAGE_KEY)) || {};
+            let defaultWatchlist = {};
+
+            try {
+                const response = await fetch('watchlist.json');
+                if (response.ok) {
+                    defaultWatchlist = await response.json();
+                } else {
+                    console.error('Could not fetch default watchlist.');
+                }
+            } catch (error) {
+                console.error('Error fetching initial watchlist:', error);
+            }
+
+            // Merge default list with the user's local list.
+            // The local list takes precedence over the default one.
+            const mergedWatchlist = { ...defaultWatchlist, ...localWatchlist };
+
+            localStorage.setItem(WATCHLIST_STORAGE_KEY, JSON.stringify(mergedWatchlist));
+            
+            updateWatchlistDropdown(mergedWatchlist);
+            loadSelectedWatchlist(mergedWatchlist);
+        }
+
+        function updateWatchlistDropdown(watchlist) {
+            const currentSelection = watchlistSelect.value;
+            watchlistSelect.innerHTML = '';
+            for (const groupName in watchlist) {
+                const option = document.createElement('option');
+                option.value = groupName;
+                option.textContent = groupName;
+                watchlistSelect.appendChild(option);
+            }
+            if (watchlist[currentSelection]) {
+                watchlistSelect.value = currentSelection;
+            }
+        }
+
+        function loadSelectedWatchlist(watchlist) {
+            const selectedGroup = watchlistSelect.value;
+            if (watchlist[selectedGroup]) {
+                tickersInput.value = watchlist[selectedGroup].join(', ');
+            }
+        }
+
+        loadWatchlistBtn.addEventListener('click', () => {
+            const watchlist = JSON.parse(localStorage.getItem(WATCHLIST_STORAGE_KEY));
+            loadSelectedWatchlist(watchlist);
+        });
+
+        createWatchlistBtn.addEventListener('click', () => {
+            const groupName = prompt('새로 저장할 관심종목 그룹 이름을 입력하세요:');
+            if (groupName) {
+                const tickers = getTickers();
+                if (tickers && tickers.length > 0) {
+                    let watchlist = JSON.parse(localStorage.getItem(WATCHLIST_STORAGE_KEY)) || {};
+                    if (watchlist[groupName]) {
+                        if (!confirm(`'${groupName}' 그룹이 이미 존재합니다. 덮어쓰시겠습니까?`)) {
+                            return;
+                        }
+                    }
+                    watchlist[groupName] = tickers;
+                    localStorage.setItem(WATCHLIST_STORAGE_KEY, JSON.stringify(watchlist));
+                    updateWatchlistDropdown(watchlist);
+                    watchlistSelect.value = groupName;
+                    alert(`관심종목 '${groupName}'이(가) 새로 저장되었습니다.`);
+                } else {
+                    alert('저장할 종목이 없습니다. 티커를 입력해주세요.');
+                }
+            }
+        });
+
+        updateWatchlistBtn.addEventListener('click', () => {
+            const selectedGroup = watchlistSelect.value;
+            if (selectedGroup) {
+                const tickers = getTickers();
+                if (tickers && tickers.length > 0) {
+                    if (confirm(`'${selectedGroup}' 그룹을 현재 입력된 종목으로 업데이트하시겠습니까?`)) {
+                        let watchlist = JSON.parse(localStorage.getItem(WATCHLIST_STORAGE_KEY));
+                        watchlist[selectedGroup] = tickers;
+                        localStorage.setItem(WATCHLIST_STORAGE_KEY, JSON.stringify(watchlist));
+                        alert(`관심종목 '${selectedGroup}'이(가) 업데이트되었습니다.`);
+                    }
+                } else {
+                    alert('저장할 종목이 없습니다. 티커를 입력해주세요.');
+                }
+            }
+        });
+
+        deleteWatchlistBtn.addEventListener('click', () => {
+            const selectedGroup = watchlistSelect.value;
+            if (selectedGroup && confirm(`'${selectedGroup}' 그룹을 정말 삭제하시겠습니까?`)) {
+                let watchlist = JSON.parse(localStorage.getItem(WATCHLIST_STORAGE_KEY));
+                delete watchlist[selectedGroup];
+                localStorage.setItem(WATCHLIST_STORAGE_KEY, JSON.stringify(watchlist));
+                updateWatchlistDropdown(watchlist);
+                loadSelectedWatchlist(watchlist);
+            }
+        });
+
+        resetWatchlistBtn.addEventListener('click', () => {
+            if (confirm('정말로 모든 관심종목 데이터를 삭제하고 초기 상태로 되돌리시겠습니까? 이 작업은 되돌릴 수 없습니다.')) {
+                localStorage.removeItem(WATCHLIST_STORAGE_KEY);
+                initializeWatchlist();
+                alert('관심종목 데이터가 초기화되었습니다.');
+            }
+        });
+
+        // --- Utility Functions ---
+        function formatDate(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        function getMostRecentWeekday(date) {
+            let d = new Date(date);
+            d.setDate(d.getDate() - 1);
+            let day = d.getDay();
+            if (day === 0) d.setDate(d.getDate() - 2);
+            else if (day === 6) d.setDate(d.getDate() - 1);
+            return d;
+        }
+
+        // [추가] 날짜 선택 유효성 검사 및 안내 함수
+        function isDateSelectionValid(dateInput) {
+            const selectedDate = new Date(dateInput.value + 'T00:00:00');
+            const today = new Date();
+            today.setHours(0, 0, 0, 0); // 시간, 분, 초, 밀리초를 0으로 설정하여 날짜만 비교
+
+            if (selectedDate >= today) {
+                const confirmation = confirm(
+                    "장 마감 및 데이터 집계가 완료되지 않아 오늘 날짜의 데이터는 정확하지 않거나 제공되지 않을 수 있습니다.\n\n가장 최근 거래일의 데이터로 조회하시겠습니까?"
+                );
+                if (confirmation) {
+                    dateInput.value = formatDate(getMostRecentWeekday(new Date()));
+                    return true;
+                }
+                // 사용자가 '취소'를 눌러도 일단 진행은 하도록 허용
+                return true; 
+            }
+            return true; // 과거 날짜는 항상 유효
+        }
+
+        // --- Default Date Setup ---
+        const today = new Date();
+        const lastTradingDay = getMostRecentWeekday(new Date()); // 데이터 조회가 확실한 가장 최근 거래일
+
+        // [수정] 가장 최근 거래일이 속한 주의 월요일을 계산합니다.
+        const dayOfWeek = lastTradingDay.getDay(); // 0:Sun, 1:Mon, ..., 6:Sat
+        const daysToSubtract = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+        const mondayOfWeek = new Date(lastTradingDay);
+        mondayOfWeek.setDate(lastTradingDay.getDate() - daysToSubtract);
+
+        reportDateInput.value = formatDate(lastTradingDay); // 일일 분석은 가장 최근 거래일로
+        startDateInput.value = formatDate(mondayOfWeek);   // 기간 분석 시작일은 해당 주의 월요일로
+        endDateInput.value = formatDate(lastTradingDay);     // 기간 분석 종료일은 가장 최근 거래일로
+
+        // --- Tab Switching Logic ---
+        function switchTab(activeTab, inactiveTab, activeContent, inactiveContent) {
+            activeTab.classList.add('active-tab');
+            inactiveTab.classList.remove('active-tab');
+            activeContent.classList.remove('hidden');
+            inactiveContent.classList.add('hidden');
+        }
+
+        tabDaily.addEventListener('click', () => switchTab(tabDaily, tabPeriod, contentDaily, contentPeriod));
+        tabPeriod.addEventListener('click', () => switchTab(tabPeriod, tabDaily, contentPeriod, contentDaily));
+
+        // --- API Fetching Logic ---
+        async function fetchHistoricalData(ticker, from, to) {
+            console.log(`Fetching real data for ${ticker} from ${from} to ${to || from}`);
+            const apiKey = window.API_KEY || 'YOUR_API_KEY'; // <-- .env 파일 또는 config.js에서 키를 가져옵니다.
+            
+            if (!apiKey || apiKey === 'YOUR_API_KEY' || apiKey === '${API_KEY}') {
+                alert('API 키가 설정되지 않았습니다. .env 파일을 확인해주세요.');
+                throw new Error('API key is not set.');
+            }
+
+            const effectiveTo = to || from;
+            const url = `https://financialmodelingprep.com/api/v3/historical-price-full/${ticker}?from=${from}&to=${effectiveTo}&apikey=${apiKey}`;
+
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    console.error(`API Error for ${ticker}: ${response.statusText}`);
+                    return []; // 오류 발생 시 빈 배열 반환
+                }
+                const data = await response.json();
+                
+                if (data['Error Message']) {
+                    console.error(`API Error for ${ticker}: ${data['Error Message']}`);
+                    return [];
+                }
+
+                // API 응답을 기존 형식에 맞게 변환
+                return data.historical.map(item => ({
+                    date: item.date,
+                    high: item.high,
+                    low: item.low,
+                    symbol: ticker
+                }));
+
+            } catch (error) {
+                console.error(`Network or fetch error for ${ticker}:`, error);
+                return []; // 네트워크 오류 시 빈 배열 반환
+            }
+        }
+
+        // --- Report Generation ---
+        function startLoading() {
+            loader.style.display = 'flex';
+            resultTableContainer.innerHTML = '';
+            noResultMessage.style.display = 'none';
+        }
+
+        function stopLoading() {
+            loader.style.display = 'none';
+        }
+
+        function getTickers() {
+            const rawTickers = tickersInput.value.trim();
+            if (!rawTickers) {
+                alert('분석할 종목의 티커를 입력해주세요.');
+                return null;
+            }
+            return rawTickers.split(',').map(t => t.trim().toUpperCase()).filter(t => t);
+        }
+
+        // --- Daily Report Logic ---
+        async function generateDailyReport() {
+            if (!isDateSelectionValid(reportDateInput)) return;
+
+            const tickers = getTickers();
+            if (!tickers) return;
+
+            startLoading();
+            const reportDate = reportDateInput.value;
+
+            try {
+                const promises = tickers.map(ticker => fetchHistoricalData(ticker, reportDate, null));
+                const results = await Promise.all(promises);
+
+                const processedData = results
+                    .filter(stockData => stockData && stockData.length > 0)
+                    .map(stockData => {
+                        const latestData = stockData[0]; // We now get data for the specific day
+                        if (latestData.low <= 0) return null;
+                        const changeRate = ((latestData.high - latestData.low) / latestData.low) * 100;
+                        return { 
+                            ticker: latestData.symbol, 
+                            low: latestData.low, 
+                            high: latestData.high, 
+                            changeRate 
+                        };
+                    })
+                    .filter(stock => stock && stock.changeRate >= 5)
+                    .sort((a, b) => b.changeRate - a.changeRate);
+
+                if (processedData.length > 0) {
+                    renderDailyTable(processedData);
+                } else {
+                    noResultText.textContent = '선택하신 조건에 맞는 종목이 없습니다. (주말 또는 휴장일인지 확인해주세요)';
+                    noResultMessage.style.display = 'block';
+                }
+            } catch (error) {
+                console.error("일일 데이터 분석 중 오류:", error);
+                resultTableContainer.innerHTML = `<p class="text-center text-red-500">데이터를 불러오는 데 실패했습니다.</p>`;
+            } finally {
+                stopLoading();
+            }
+        }
+
+        // --- Period Report Logic ---
+        async function generatePeriodReport() {
+            if (!isDateSelectionValid(endDateInput)) return;
+
+            const tickers = getTickers();
+            if (!tickers) return;
+
+            const startDate = startDateInput.value;
+            const endDate = endDateInput.value;
+            if (new Date(startDate) >= new Date(endDate)) {
+                alert('시작 날짜는 종료 날짜보다 이전이어야 합니다.');
+                return;
+            }
+
+            startLoading();
+
+            try {
+                const promises = tickers.map(ticker => fetchHistoricalData(ticker, startDate, endDate));
+                const results = await Promise.all(promises);
+
+                const tickersWithData = {};
+                results.filter(r => r).forEach(data => {
+                    if (data.length > 0) {
+                        tickersWithData[data[0].symbol] = data;
+                    }
+                });
+
+                const persistentTickersData = Object.keys(tickersWithData)
+                    .map(ticker => {
+                        const history = tickersWithData[ticker];
+                        const dailyVolatilities = history.map(day => {
+                            if (day.low <= 0) return 0;
+                            return ((day.high - day.low) / day.low) * 100;
+                        });
+
+                        const allDaysVolatile = dailyVolatilities.every(rate => rate >= 5);
+                        if (!allDaysVolatile || history.length === 0) return null;
+
+                        const averageVolatility = dailyVolatilities.reduce((a, b) => a + b, 0) / dailyVolatilities.length;
+                        
+                        return {
+                            ticker,
+                            averageVolatility,
+                            dailyVolatilities // Pass daily volatilities for the chart
+                        };
+                    })
+                    .filter(data => data)
+                    .sort((a, b) => b.averageVolatility - a.averageVolatility);
+
+                if (persistentTickersData.length > 0) {
+                    renderPeriodTable(persistentTickersData);
+                } else {
+                    noResultText.textContent = '지정된 기간 동안 매일 5% 이상 변동성을 유지한 종목이 없습니다.';
+                    noResultMessage.style.display = 'block';
+                }
+            } catch (error) {
+                console.error("기간 데이터 분석 중 오류:", error);
+                resultTableContainer.innerHTML = `<p class="text-center text-red-500">데이터를 불러오는 데 실패했습니다.</p>`;
+            } finally {
+                stopLoading();
+            }
+        }
+
+        // --- Table Rendering ---
+        function createBarChart(data, average, width = 120, height = 30) {
+            const max = Math.max(...data, 1); // Ensure max is at least 1 to avoid division by zero
+            const barWidth = data.length > 0 ? width / data.length : 0;
+            
+            const bars = data.map((d, i) => {
+                const barHeight = max > 0 ? (d / max) * height : 0;
+                const x = i * barWidth;
+                const y = height - barHeight;
+                const fillColor = d > average ? '#ef4444' : '#3b82f6'; // Red if > avg, else blue
+                
+                return `<rect x="${x.toFixed(2)}" y="${y.toFixed(2)}" width="${(barWidth - 1 > 0 ? barWidth - 1 : 0).toFixed(2)}" height="${barHeight.toFixed(2)}" fill="${fillColor}" />`;
+            }).join('');
+
+            return `
+                <svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg" class="bg-gray-100 dark:bg-gray-700/50 rounded-sm">
+                    ${bars}
+                </svg>
+            `;
+        }
+
+        function renderDailyTable(data) {
+            const tableHTML = `
+                <div class="overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700">
+                    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                        <thead class="bg-gray-50 dark:bg-gray-800/50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">티커</th>
+                                <th class="px-6 py-3 text-right text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">저가 ($)</th>
+                                <th class="px-6 py-3 text-right text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">고가 ($)</th>
+                                <th class="px-6 py-3 text-right text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">일중 변동률 (%)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white dark:bg-gray-800/50 divide-y divide-gray-200 dark:divide-gray-700">
+                            ${data.map(stock => {
+                                const changeRateColor = stock.changeRate >= 10 ? 'text-red-500 dark:text-red-400' : 'text-blue-500 dark:text-blue-400';
+                                return `
+                                    <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors duration-200">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">${stock.ticker}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-right text-gray-600 dark:text-gray-300">${stock.low.toFixed(2)}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-right text-gray-600 dark:text-gray-300">${stock.high.toFixed(2)}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-right font-bold ${changeRateColor}">${stock.changeRate.toFixed(2)}%</td>
+                                    </tr>
+                                `;
+                            }).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+            resultTableContainer.innerHTML = tableHTML;
+        }
+
+        function renderPeriodTable(data) {
+            const tableHTML = `
+                <div class="overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700">
+                    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                        <thead class="bg-gray-50 dark:bg-gray-800/50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">티커</th>
+                                <th class="px-6 py-3 text-center text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">일일 변동률 추이</th>
+                                <th class="px-6 py-3 text-right text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">평균 변동률 (%)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white dark:bg-gray-800/50 divide-y divide-gray-200 dark:divide-gray-700">
+                            ${data.map(stock => `
+                                <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors duration-200">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">${stock.ticker}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center">${createBarChart(stock.dailyVolatilities, stock.averageVolatility)}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-right font-bold text-blue-500 dark:text-blue-400">${stock.averageVolatility.toFixed(2)}%</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+                 <p class="mt-4 text-sm text-gray-600 dark:text-gray-400">* 위 종목들은 지정된 기간의 모든 거래일 동안 일중 변동률 5% 이상을 기록했습니다.</p>
+                 <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">** 차트 안내: 빨간색 막대는 해당 종목의 평균 변동률보다 높은 날을 의미합니다.</p>
+            `;
+            resultTableContainer.innerHTML = tableHTML;
+        }
+
+        // --- Event Listeners ---
+        generateReportDailyBtn.addEventListener('click', generateDailyReport);
+        generateReportPeriodBtn.addEventListener('click', generatePeriodReport);
+
+        // --- Initialize --- 
+        document.addEventListener('DOMContentLoaded', initializeWatchlist);
+
+    </script>
+</body>
+</html>
