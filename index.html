@@ -373,21 +373,21 @@
 
         // --- API Fetching Logic ---
         async function fetchHistoricalData(ticker, from, to) {
-            console.log(`Fetching real data for ${ticker} from ${from} to ${to || from}`);
-            const apiKey = window.API_KEY || 'YOUR_API_KEY'; // <-- .env 파일 또는 config.js에서 키를 가져옵니다.
-            
-            if (!apiKey || apiKey === 'YOUR_API_KEY' || apiKey === '${API_KEY}') {
-                alert('API 키가 설정되지 않았습니다. .env 파일을 확인해주세요.');
-                throw new Error('API key is not set.');
-            }
+            console.log(`Fetching data for ${ticker} from ${from} to ${to || from} via proxy`);
 
             const effectiveTo = to || from;
-            const url = `https://financialmodelingprep.com/api/v3/historical-price-full/${ticker}?from=${from}&to=${effectiveTo}&apikey=${apiKey}`;
+            // Construct the proxy URL
+            const url = `/api/data?symbol=${ticker}&from=${from}&to=${effectiveTo}`;
 
             try {
                 const response = await fetch(url);
                 if (!response.ok) {
                     console.error(`API Error for ${ticker}: ${response.statusText}`);
+                    // Try to get more specific error from proxy response
+                    const errorData = await response.json().catch(() => null);
+                    if (errorData && errorData.error) {
+                         alert(`Error for ${ticker}: ${errorData.error}`);
+                    }
                     return []; // 오류 발생 시 빈 배열 반환
                 }
                 const data = await response.json();
@@ -397,16 +397,26 @@
                     return [];
                 }
 
-                // API 응답을 기존 형식에 맞게 변환
-                return data.historical.map(item => ({
-                    date: item.date,
-                    high: item.high,
-                    low: item.low,
-                    symbol: ticker
-                }));
+                // The server now returns data in the format our frontend expects,
+                // but if it's directly from the external API, we might still need to map it.
+                // Let's assume the server returns the same format as the old API call for now.
+                // If you modified the server to reformat the data, you might not need this map.
+                if (data.historical) { // Check if the data is in the original FMP format
+                    return data.historical.map(item => ({
+                        date: item.date,
+                        high: item.high,
+                        low: item.low,
+                        symbol: ticker
+                    }));
+                }
+                // If the server sends data in a different format, adjust here.
+                // For now, assuming it might be a direct proxy.
+                return data;
+
 
             } catch (error) {
                 console.error(`Network or fetch error for ${ticker}:`, error);
+                alert('An error occurred while fetching data. Check the console for details.');
                 return []; // 네트워크 오류 시 빈 배열 반환
             }
         }
