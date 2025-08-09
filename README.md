@@ -29,7 +29,7 @@
     cp .env.example .env
     ```
     그 다음, 생성된 `.env` 파일을 열어 `your_fmp_api_key_here` 부분을 실제 API 키로 교체해 주세요.
-    **(주의: 코드 호환성을 위해 .env 파일의 변수명인 `RAPIDAPI_KEY`는 변경하지 마세요.)**
+    **(주의: 코드 호환성을 위해 .env 파일의 변수명인 `API_KEY`는 변경하지 마세요.)**
 
 3.  **애플리케이션 실행 (Run the application):**
     ```bash
