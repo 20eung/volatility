@@ -1,0 +1,20 @@
+{
+  "symbol": "MSTR",
+  "historical": [
+    {
+      "date": "2025-08-08",
+      "open": 397.6,
+      "high": 409.65,
+      "low": 389.03,
+      "close": 395.13,
+      "adjClose": 395.13,
+      "volume": 11200116,
+      "unadjustedVolume": 11200116,
+      "change": -2.47,
+      "changePercent": -0.62123,
+      "vwap": 397.8525,
+      "label": "August 08, 25",
+      "changeOverTime": -0.0062123
+    }
+  ]
+}

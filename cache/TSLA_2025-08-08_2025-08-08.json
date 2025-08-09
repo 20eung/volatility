@@ -1,0 +1,20 @@
+{
+  "symbol": "TSLA",
+  "historical": [
+    {
+      "date": "2025-08-08",
+      "open": 321.43,
+      "high": 335.15,
+      "low": 320.98,
+      "close": 329.65,
+      "adjClose": 329.65,
+      "volume": 91200319,
+      "unadjustedVolume": 91200319,
+      "change": 8.22,
+      "changePercent": 2.56,
+      "vwap": 326.8025,
+      "label": "August 08, 25",
+      "changeOverTime": 0.0256
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "symbol": "CRWV",
+  "historical": [
+    {
+      "date": "2025-08-08",
+      "open": 128.05,
+      "high": 130.98,
+      "low": 121.7,
+      "close": 129.55,
+      "adjClose": 129.55,
+      "volume": 17159705,
+      "unadjustedVolume": 17159705,
+      "change": 1.5,
+      "changePercent": 1.17,
+      "vwap": 127.57,
+      "label": "August 08, 25",
+      "changeOverTime": 0.0117
+    }
+  ]
+}

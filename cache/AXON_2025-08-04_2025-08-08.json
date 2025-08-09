@@ -1,0 +1,80 @@
+{
+  "symbol": "AXON",
+  "historical": [
+    {
+      "date": "2025-08-08",
+      "open": 872.47,
+      "high": 878.62,
+      "low": 835.7,
+      "close": 842.5,
+      "adjClose": 842.5,
+      "volume": 667561,
+      "unadjustedVolume": 667561,
+      "change": -29.97,
+      "changePercent": -3.44,
+      "vwap": 857.3225,
+      "label": "August 08, 25",
+      "changeOverTime": -0.0344
+    },
+    {
+      "date": "2025-08-07",
+      "open": 867.23,
+      "high": 885,
+      "low": 860.98,
+      "close": 870.97,
+      "adjClose": 870.97,
+      "volume": 700950,
+      "unadjustedVolume": 700950,
+      "change": 3.74,
+      "changePercent": 0.43126,
+      "vwap": 871.045,
+      "label": "August 07, 25",
+      "changeOverTime": 0.0043126
+    },
+    {
+      "date": "2025-08-06",
+      "open": 859.76,
+      "high": 879.22,
+      "low": 843.02,
+      "close": 863.65,
+      "adjClose": 863.65,
+      "volume": 842126,
+      "unadjustedVolume": 842126,
+      "change": 3.89,
+      "changePercent": 0.45245,
+      "vwap": 861.4125,
+      "label": "August 06, 25",
+      "changeOverTime": 0.0045245
+    },
+    {
+      "date": "2025-08-05",
+      "open": 818,
+      "high": 885.92,
+      "low": 802.96,
+      "close": 867.12,
+      "adjClose": 867.12,
+      "volume": 2535000,
+      "unadjustedVolume": 2535000,
+      "change": 49.12,
+      "changePercent": 6,
+      "vwap": 843.5,
+      "label": "August 05, 25",
+      "changeOverTime": 0.06
+    },
+    {
+      "date": "2025-08-04",
+      "open": 751.04,
+      "high": 755,
+      "low": 736.95,
+      "close": 744.88,
+      "adjClose": 744.88,
+      "volume": 769837,
+      "unadjustedVolume": 769837,
+      "change": -6.16,
+      "changePercent": -0.8202,
+      "vwap": 746.9675,
+      "label": "August 04, 25",
+      "changeOverTime": -0.008202
+    }
+  ]
+}

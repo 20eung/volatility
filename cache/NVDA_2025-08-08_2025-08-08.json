@@ -1,0 +1,20 @@
+{
+  "symbol": "NVDA",
+  "historical": [
+    {
+      "date": "2025-08-08",
+      "open": 181.55,
+      "high": 183.3,
+      "low": 180.4,
+      "close": 182.7,
+      "adjClose": 182.7,
+      "volume": 123396679,
+      "unadjustedVolume": 123396679,
+      "change": 1.15,
+      "changePercent": 0.63343,
+      "vwap": 181.9875,
+      "label": "August 08, 25",
+      "changeOverTime": 0.0063343
+    }
+  ]
+}

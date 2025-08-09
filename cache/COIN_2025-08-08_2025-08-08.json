@@ -1,0 +1,20 @@
+{
+  "symbol": "COIN",
+  "historical": [
+    {
+      "date": "2025-08-08",
+      "open": 311.44,
+      "high": 313.7,
+      "low": 301.23,
+      "close": 310.54,
+      "adjClose": 310.54,
+      "volume": 9253803,
+      "unadjustedVolume": 9253803,
+      "change": -0.9,
+      "changePercent": -0.28898,
+      "vwap": 309.2275,
+      "label": "August 08, 25",
+      "changeOverTime": -0.0028898
+    }
+  ]
+}

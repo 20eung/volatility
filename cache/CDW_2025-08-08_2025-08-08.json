@@ -1,0 +1,20 @@
+{
+  "symbol": "CDW",
+  "historical": [
+    {
+      "date": "2025-08-08",
+      "open": 162.7,
+      "high": 163.65,
+      "low": 162.05,
+      "close": 162.92,
+      "adjClose": 162.92,
+      "volume": 1066641,
+      "unadjustedVolume": 1066641,
+      "change": 0.22,
+      "changePercent": 0.13522,
+      "vwap": 162.83,
+      "label": "August 08, 25",
+      "changeOverTime": 0.0013522
+    }
+  ]
+}

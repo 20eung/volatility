@@ -1,0 +1,20 @@
+{
+  "symbol": "CRWD",
+  "historical": [
+    {
+      "date": "2025-08-08",
+      "open": 431,
+      "high": 434.5,
+      "low": 420.42,
+      "close": 424.49,
+      "adjClose": 424.49,
+      "volume": 3632121,
+      "unadjustedVolume": 3632121,
+      "change": -6.51,
+      "changePercent": -1.51,
+      "vwap": 427.6025,
+      "label": "August 08, 25",
+      "changeOverTime": -0.0151
+    }
+  ]
+}

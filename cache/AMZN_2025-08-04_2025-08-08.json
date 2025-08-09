@@ -1,0 +1,80 @@
+{
+  "symbol": "AMZN",
+  "historical": [
+    {
+      "date": "2025-08-08",
+      "open": 223.14,
+      "high": 223.8,
+      "low": 221.88,
+      "close": 222.69,
+      "adjClose": 222.69,
+      "volume": 32970477,
+      "unadjustedVolume": 32970477,
+      "change": -0.45,
+      "changePercent": -0.20167,
+      "vwap": 222.8775,
+      "label": "August 08, 25",
+      "changeOverTime": -0.0020167
+    },
+    {
+      "date": "2025-08-07",
+      "open": 221,
+      "high": 226.22,
+      "low": 220.82,
+      "close": 223.13,
+      "adjClose": 223.13,
+      "volume": 40603513,
+      "unadjustedVolume": 40603513,
+      "change": 2.13,
+      "changePercent": 0.9638,
+      "vwap": 222.7925,
+      "label": "August 07, 25",
+      "changeOverTime": 0.009638
+    },
+    {
+      "date": "2025-08-06",
+      "open": 214.7,
+      "high": 222.65,
+      "low": 213.74,
+      "close": 222.31,
+      "adjClose": 222.31,
+      "volume": 54823045,
+      "unadjustedVolume": 54823045,
+      "change": 7.62,
+      "changePercent": 3.54,
+      "vwap": 218.35,
+      "label": "August 06, 25",
+      "changeOverTime": 0.0354
+    },
+    {
+      "date": "2025-08-05",
+      "open": 213.05,
+      "high": 216.3,
+      "low": 212.87,
+      "close": 213.75,
+      "adjClose": 213.75,
+      "volume": 51505121,
+      "unadjustedVolume": 51505121,
+      "change": 0.7,
+      "changePercent": 0.32856,
+      "vwap": 213.9925,
+      "label": "August 05, 25",
+      "changeOverTime": 0.0032856
+    },
+    {
+      "date": "2025-08-04",
+      "open": 217.4,
+      "high": 217.44,
+      "low": 211.42,
+      "close": 211.65,
+      "adjClose": 211.65,
+      "volume": 77890146,
+      "unadjustedVolume": 77890146,
+      "change": -5.75,
+      "changePercent": -2.64,
+      "vwap": 214.4775,
+      "label": "August 04, 25",
+      "changeOverTime": -0.0264
+    }
+  ]
+}

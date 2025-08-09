@@ -1,0 +1,80 @@
+{
+  "symbol": "UMAC",
+  "historical": [
+    {
+      "date": "2025-08-08",
+      "open": 9.71,
+      "high": 10.24,
+      "low": 9.53,
+      "close": 10.09,
+      "adjClose": 10.09,
+      "volume": 1890833,
+      "unadjustedVolume": 1890833,
+      "change": 0.38,
+      "changePercent": 3.91,
+      "vwap": 9.8925,
+      "label": "August 08, 25",
+      "changeOverTime": 0.0391
+    },
+    {
+      "date": "2025-08-07",
+      "open": 10.06,
+      "high": 10.08,
+      "low": 9.51,
+      "close": 9.59,
+      "adjClose": 9.59,
+      "volume": 1776900,
+      "unadjustedVolume": 1776900,
+      "change": -0.47,
+      "changePercent": -4.67,
+      "vwap": 9.81,
+      "label": "August 07, 25",
+      "changeOverTime": -0.0467
+    },
+    {
+      "date": "2025-08-06",
+      "open": 10.21,
+      "high": 10.31,
+      "low": 9.83,
+      "close": 9.91,
+      "adjClose": 9.91,
+      "volume": 2287400,
+      "unadjustedVolume": 2287400,
+      "change": -0.3,
+      "changePercent": -2.94,
+      "vwap": 10.065,
+      "label": "August 06, 25",
+      "changeOverTime": -0.0294
+    },
+    {
+      "date": "2025-08-05",
+      "open": 10.08,
+      "high": 11.08,
+      "low": 9.89,
+      "close": 10.46,
+      "adjClose": 10.46,
+      "volume": 6174700,
+      "unadjustedVolume": 6174700,
+      "change": 0.38,
+      "changePercent": 3.77,
+      "vwap": 10.3775,
+      "label": "August 05, 25",
+      "changeOverTime": 0.0377
+    },
+    {
+      "date": "2025-08-04",
+      "open": 8.96,
+      "high": 9.73,
+      "low": 8.85,
+      "close": 9.68,
+      "adjClose": 9.68,
+      "volume": 2020900,
+      "unadjustedVolume": 2020900,
+      "change": 0.72,
+      "changePercent": 8.04,
+      "vwap": 9.305,
+      "label": "August 04, 25",
+      "changeOverTime": 0.0804
+    }
+  ]
+}

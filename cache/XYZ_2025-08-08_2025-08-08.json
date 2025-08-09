@@ -1,0 +1,20 @@
+{
+  "symbol": "XYZ",
+  "historical": [
+    {
+      "date": "2025-08-08",
+      "open": 82.13,
+      "high": 82.5,
+      "low": 73.2,
+      "close": 73.39,
+      "adjClose": 73.39,
+      "volume": 22800821,
+      "unadjustedVolume": 22800821,
+      "change": -8.73,
+      "changePercent": -10.64,
+      "vwap": 77.805,
+      "label": "August 08, 25",
+      "changeOverTime": -0.1064
+    }
+  ]
+}

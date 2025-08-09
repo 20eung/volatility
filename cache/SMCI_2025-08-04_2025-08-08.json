@@ -1,0 +1,80 @@
+{
+  "symbol": "SMCI",
+  "historical": [
+    {
+      "date": "2025-08-08",
+      "open": 46.91,
+      "high": 47.37,
+      "low": 44.53,
+      "close": 44.6,
+      "adjClose": 44.6,
+      "volume": 43796793,
+      "unadjustedVolume": 43796793,
+      "change": -2.31,
+      "changePercent": -4.92,
+      "vwap": 45.8525,
+      "label": "August 08, 25",
+      "changeOverTime": -0.0492
+    },
+    {
+      "date": "2025-08-07",
+      "open": 47.15,
+      "high": 48.82,
+      "low": 46.57,
+      "close": 46.67,
+      "adjClose": 46.67,
+      "volume": 43942200,
+      "unadjustedVolume": 43942200,
+      "change": -0.48,
+      "changePercent": -1.02,
+      "vwap": 47.3025,
+      "label": "August 07, 25",
+      "changeOverTime": -0.0102
+    },
+    {
+      "date": "2025-08-06",
+      "open": 47.33,
+      "high": 48.13,
+      "low": 44.83,
+      "close": 46.79,
+      "adjClose": 46.79,
+      "volume": 115217930,
+      "unadjustedVolume": 115217930,
+      "change": -0.54,
+      "changePercent": -1.14,
+      "vwap": 46.77,
+      "label": "August 06, 25",
+      "changeOverTime": -0.0114
+    },
+    {
+      "date": "2025-08-05",
+      "open": 58.81,
+      "high": 59.4,
+      "low": 56.79,
+      "close": 57.26,
+      "adjClose": 57.26,
+      "volume": 49970613,
+      "unadjustedVolume": 49970613,
+      "change": -1.55,
+      "changePercent": -2.64,
+      "vwap": 58.065,
+      "label": "August 05, 25",
+      "changeOverTime": -0.0264
+    },
+    {
+      "date": "2025-08-04",
+      "open": 58.16,
+      "high": 59.19,
+      "low": 57.62,
+      "close": 58.23,
+      "adjClose": 58.23,
+      "volume": 32743628,
+      "unadjustedVolume": 32743628,
+      "change": 0.075,
+      "changePercent": 0.12036,
+      "vwap": 58.3,
+      "label": "August 04, 25",
+      "changeOverTime": 0.0012036
+    }
+  ]
+}
