@@ -586,7 +586,11 @@
                                 const changeRateColor = stock.changeRate >= 10 ? 'text-red-500 dark:text-red-400' : 'text-blue-500 dark:text-blue-400';
                                 return `
                                     <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors duration-200">
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">${stock.ticker}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
+                                            <a href="https://www.tradingview.com/chart/?symbol=${stock.ticker}&interval=30&style=8" target="_blank" rel="noopener noreferrer" class="text-indigo-600 dark:text-indigo-400 hover:underline">
+                                                ${stock.ticker}
+                                            </a>
+                                        </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-right text-gray-600 dark:text-gray-300">${stock.low.toFixed(2)}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-right text-gray-600 dark:text-gray-300">${stock.high.toFixed(2)}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-right font-bold ${changeRateColor}">${stock.changeRate.toFixed(2)}%</td>
@@ -614,7 +618,11 @@
                         <tbody class="bg-white dark:bg-gray-800/50 divide-y divide-gray-200 dark:divide-gray-700">
                             ${data.map(stock => `
                                 <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors duration-200">
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">${stock.ticker}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
+                                        <a href="https://www.tradingview.com/chart/?symbol=${stock.ticker}&interval=30&style=8" target="_blank" rel="noopener noreferrer" class="text-indigo-600 dark:text-indigo-400 hover:underline">
+                                            ${stock.ticker}
+                                        </a>
+                                    </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-center">${createBarChart(stock.dailyVolatilities, stock.averageVolatility)}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-right font-bold text-blue-500 dark:text-blue-400">${stock.averageVolatility.toFixed(2)}%</td>
                                 </tr>
