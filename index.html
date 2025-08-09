@@ -579,21 +579,26 @@
                                 <th class="px-6 py-3 text-right text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">저가 ($)</th>
                                 <th class="px-6 py-3 text-right text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">고가 ($)</th>
                                 <th class="px-6 py-3 text-right text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">일중 변동률 (%)</th>
+                                <th class="px-6 py-3 text-center text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">차트보기</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white dark:bg-gray-800/50 divide-y divide-gray-200 dark:divide-gray-700">
                             ${data.map(stock => {
                                 const changeRateColor = stock.changeRate >= 10 ? 'text-red-500 dark:text-red-400' : 'text-blue-500 dark:text-blue-400';
+                                const chartUrl = `https://www.tradingview.com/chart/?symbol=${stock.ticker}&style=8&study=RSI&study=MA&MA%1,length=10&MA%2,length=20`;
                                 return `
                                     <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors duration-200">
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
-                                            <a href="https://www.tradingview.com/chart/?symbol=${stock.ticker}&interval=30&style=8" target="_blank" rel="noopener noreferrer" class="text-indigo-600 dark:text-indigo-400 hover:underline">
-                                                ${stock.ticker}
-                                            </a>
+                                            ${stock.ticker}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-right text-gray-600 dark:text-gray-300">${stock.low.toFixed(2)}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-right text-gray-600 dark:text-gray-300">${stock.high.toFixed(2)}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-right font-bold ${changeRateColor}">${stock.changeRate.toFixed(2)}%</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-center space-x-2">
+                                            <a href="${chartUrl}&interval=30" target="_blank" rel="noopener noreferrer" class="text-indigo-600 dark:text-indigo-400 hover:underline">30분</a>
+                                            <a href="${chartUrl}&interval=60" target="_blank" rel="noopener noreferrer" class="text-indigo-600 dark:text-indigo-400 hover:underline">1시간</a>
+                                            <a href="${chartUrl}&interval=1440" target="_blank" rel="noopener noreferrer" class="text-indigo-600 dark:text-indigo-400 hover:underline">1일</a>
+                                        </td>
                                     </tr>
                                 `;
                             }).join('')}
@@ -613,20 +618,27 @@
                                 <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">티커</th>
                                 <th class="px-6 py-3 text-center text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">일일 변동률 추이</th>
                                 <th class="px-6 py-3 text-right text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">평균 변동률 (%)</th>
+                                <th class="px-6 py-3 text-center text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">차트보기</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white dark:bg-gray-800/50 divide-y divide-gray-200 dark:divide-gray-700">
-                            ${data.map(stock => `
+                            ${data.map(stock => {
+                                const chartUrl = `https://www.tradingview.com/chart/?symbol=${stock.ticker}&style=8&study=RSI&study=MA&MA%1,length=10&MA%2,length=20`;
+                                return `
                                 <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors duration-200">
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
-                                        <a href="https://www.tradingview.com/chart/?symbol=${stock.ticker}&interval=30&style=8" target="_blank" rel="noopener noreferrer" class="text-indigo-600 dark:text-indigo-400 hover:underline">
-                                            ${stock.ticker}
-                                        </a>
+                                        ${stock.ticker}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-center">${createBarChart(stock.dailyVolatilities, stock.averageVolatility)}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-right font-bold text-blue-500 dark:text-blue-400">${stock.averageVolatility.toFixed(2)}%</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center space-x-2">
+                                        <a href="${chartUrl}&interval=30" target="_blank" rel="noopener noreferrer" class="text-indigo-600 dark:text-indigo-400 hover:underline">30분</a>
+                                        <a href="${chartUrl}&interval=60" target="_blank" rel="noopener noreferrer" class="text-indigo-600 dark:text-indigo-400 hover:underline">1시간</a>
+                                        <a href="${chartUrl}&interval=1440" target="_blank" rel="noopener noreferrer" class="text-indigo-600 dark:text-indigo-400 hover:underline">1일</a>
+                                    </td>
                                 </tr>
-                            `).join('')}
+                                `
+                            }).join('')}
                         </tbody>
                     </table>
                 </div>
